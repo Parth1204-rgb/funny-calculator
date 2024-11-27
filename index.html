@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarcastic Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="calculator">
+        <div class="title">Sarcastic Calculator 😏</div>
+        <div class="display" id="display">Type your numbers...</div>
+        <div class="buttons">
+            <button onclick="addInput('7')">7</button>
+            <button onclick="addInput('8')">8</button>
+            <button onclick="addInput('9')">9</button>
+            <button onclick="addInput('+')">+</button>
+            <button onclick="addInput('4')">4</button>
+            <button onclick="addInput('5')">5</button>
+            <button onclick="addInput('6')">6</button>
+            <button onclick="addInput('-')">-</button>
+            <button onclick="addInput('1')">1</button>
+            <button onclick="addInput('2')">2</button>
+            <button onclick="addInput('3')">3</button>
+            <button onclick="addInput('*')">×</button>
+            <button onclick="addInput('0')">0</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="addInput('/')">÷</button>
+        </div>
+    </div>
+
+    <script >
+        let expression = '';
+const display = document.getElementById('display');
+
+const sarcasticResponses = [
+    "Nice try, but that's not how math works!",
+    "Are you sure you want to do that?",
+    "I hope you have a calculator for that!",
+    "Do you even math, bro?",
+    "Wow, such a complex calculation!",
+    "You must be a math genius!",
+    "Let me guess, you're using a calculator?",
+    "That's a bold move, let's see how it turns out!",
+    "You could just guess, you know!",
+    "I can see you’re really trying hard!",
+    "Such a challenging problem. I'm so glad you asked me to solve it.",
+    "Your hard work is paying off. You've managed to stump even a calculator."
+];
+
+function addInput(value) {
+    if (display.textContent === 'Type your numbers...') {
+        expression = ''; // Reset if default text is displayed
+    }
+    expression += value;
+    display.textContent = expression;
+}
+
+function clearDisplay() {
+    expression = '';
+    display.textContent = 'Type your numbers...';
+}
+
+function calculate() {
+    try {
+        const safeExpression = expression.replace(/×/g, '*').replace(/÷/g, '/');
+        
+        // Validate the expression to avoid invalid input
+        if (!/^[0-9+\-*/(). ]+$/.test(safeExpression)) {
+            throw new Error("Invalid characters in expression");
+        }
+
+        // Safely evaluate the expression
+        const result = eval(safeExpression); // Calculate the result
+        display.textContent = result + ' - ' + getRandomResponse(); // Display result and random response
+    } catch (error) {
+        display.textContent = 'Error: Invalid Input'; // Display specific error message
+    }
+    expression = ''; // Reset the expression
+}
+
+
+function getRandomResponse() {
+    const randomIndex = Math.floor(Math.random() * sarcasticResponses.length);
+    return sarcasticResponses[randomIndex];
+}
+
+// Event listener to handle keyboard input
+document.addEventListener('keydown', (event) => {
+    const key = event.key;
+    if (!isNaN(key)) { // Check if the key is a number
+        addInput(key);
+    } else if (['+', '-', '*', '/'].includes(key)) {
+        addInput(key);
+    } else if (key === 'Enter') {
+        calculate(); // Calculate on Enter key
+    } else if (key === 'Escape' || key.toUpperCase() === 'C') {
+        clearDisplay(); // Clear on Escape key or 'C' key
+    } else if (key === 'Backspace') {
+        // Remove the last character from the expression
+        expression = expression.slice(0, -1);
+        display.textContent = expression || 'Type your numbers...'; // Update display
+    }
+});
+    </script>
+</body>
+</html>
