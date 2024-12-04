@@ -95,8 +95,4 @@ button:active {
         padding: 8px;
         font-size: 16px;
     }
-
-    button:hover {
-        transform: none; /* Disable scaling for better touch experience */
-    }
 }
